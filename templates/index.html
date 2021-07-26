@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>Demo pose estimation</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+  </head>
+  <body>
+    
+    <h1>Video Streaming Demonstration</h1>
+      
+    <div>
+        <img src="{{ url_for('video_feed') }}">
+    </div>
+      
+    <h1 id='hands_count'> </h1>
+      
+    <div>
+        <img src="{{ url_for('image_feed') }}">
+    </div>
+      
+      
+    
+    <script type="text/javascript">
+        
+        var storage = 0;
+        
+        function functionTest()
+          {
+            $.ajax(
+            {
+              type : 'POST',
+              url : "/get_data",
+              contentType: "application/json;charset=UTF-8",
+              dataType:'text',
+              data    : 'req',
+              success : function(data)
+              {
+                if (data != null)
+                {
+                  if (data != storage) {
+                      
+                      storage = JSON.parse(data);
+                      
+                      $('#hands_count').text('Hands up count: ' + storage['hands up']);
+                      $("#images").empty();
+                      
+                  }
+                }
+              }
+            });
+          }
+        
+        (function(){
+            functionTest();
+            setTimeout(arguments.callee, 3 * 1000);
+        })();
+        
+        </script>
+    
+      
+  </body>
+</html>
